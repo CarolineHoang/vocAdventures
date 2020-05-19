@@ -1,0 +1,229 @@
+<!-- 
+    Author: Caroline Hoang
+    HTML for the view page to view producer info by id
+    On this page, the user can also edit and update data
+
+    Found at the /view/<idVal> route
+    [A UI Design Project]
+-->
+
+{% extends 'navbar.html' %}
+<!DOCTYPE html>
+
+
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>View Producer</title>
+
+        <!-- jquery -->
+        <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script> 
+        <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script> 	 
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> 
+        <!-- bootstrap -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"> 
+
+        {% block jsFile %}
+        <!-- import the static js file -->
+        <script  type="text/javascript" src="{{ url_for('static', filename = 'view.js') }}" ></script>
+
+        <!-- variables being passed for get requests -->
+        
+        <script>
+            var idVal = {{idVal|tojson}};
+            var display_producers = {{display_producers|tojson}};
+        </script>
+        {% endblock%}
+
+        {% block pageStyles %}
+        <style> 
+            body{
+                font-size: 1.2rem;
+                padding-bottom: 10vw;   
+            }
+            .container{
+                width: 95vw;
+                max-width: 95vw;
+            }
+            .header{
+                    width: 100%;
+                    height: 100%;
+                    background-color: lightgrey;
+                    font-size: 2.5rem;
+                    padding: calc(8vw + 5vw) 0 8vw 5vw;
+                    font-weight: bold;
+            }
+            .entry-row{
+                margin-top: 1vh;
+                border-bottom: solid 1px grey;
+            }
+            .delete-button{
+                height: 3vw;
+                width: 3vw;
+                border-radius: .3rem;
+                background-color: rgb(255, 208, 0);
+            }
+            .input-style{
+                width: 100%
+            }
+            .hide-warning{
+                display: none;
+            }
+            .show-warning{
+                color: hotpink;
+                font-size: .8rem;
+            }
+            .starting-column{
+                padding-left: 0 !important;
+                margin-left:  0 !important;
+            }
+            .profile-img{
+                width:100%;
+            }
+            .textarea{
+                min-height:15vw;
+                max-height:60vw;   
+            }
+            .textarea:disabled{
+                border: none;
+                overflow:visible;
+                /* background-color: aqua; */
+                border-bottom: solid 1px grey;
+                background: linear-gradient(180deg, rgba(255,255,255,0) 76%, rgba(215,215,215,1) 95%, rgba(203,203,203,1) 100%);
+            }
+            .input-field{
+                display: block;
+            }
+            .input-field:disabled{
+                /* background-color: aqua; */
+                border: none;
+            }
+            .name-title:disabled{
+                font-size: 2rem;
+            }
+            .undoDelVoca{
+                width:calc(50% + 2.8vw);
+                margin-left: 15px;
+            }
+            .delVoca{
+                width:5vw;
+                padding-left: 1vw;
+                padding-right: 1vw;
+                text-align: center;
+                background-color: red;
+                color:white;
+            }
+            #form-fields{
+                overflow-wrap: break-word;
+                hyphens: auto;
+                margin-top: 5vh;
+            }
+            #add-entry{
+                padding: .3rem;
+                border-radius: .3rem;
+                background-color: rgb(0, 98, 255);
+                color: white;
+            }
+            .labelFont{
+                color:rgb(117, 117, 117)
+            }
+            .subheadingFont{
+                color: rgb(163, 162, 162);
+                text-decoration: underline;
+                font-size: 1.5rem;
+                margin-top: 1vw;
+            }
+            .editIcon-container{
+                width:4vw;
+                /* background-color: transparent; */
+                border-radius: 1rem;
+                /* border: none; */
+            }    
+        </style>
+        {% endblock%}
+    </head>
+
+    <body>
+        {% block pageContent %}
+        <div class="header" >
+            View Profile
+        </div>
+        <div class="container">
+                <div id="form-fields" class="row">
+                    <div class="col-md-2 starting-column subheadingFont" > 
+                        About Producer:
+                    </div>
+                </div>
+                <div id="form-fields" class="row">
+                    <div class="col-md-2 starting-column labelFont" > 
+                        <img src="{{display_producers[0]['profileImg']}}" class="profile-img" alt="Producer {{display_producers[0]['name']}}'s profile icon on social media" />
+                    </div>
+                    <input id="name-update" class="col-md-6 input-field name-title" value="{{display_producers[0]['name']}}"  disabled /> 
+                    <div class="col-md-2">
+                        <button id="edit-entry1" class="update editIcon-container" value="name" idVal="{{idVal}}" alt="edit Producer's name" ><img src= "https://image.flaticon.com/icons/svg/84/84380.svg" class= "editIcon" /> </button> 
+                    </div>
+                </div>
+                <div id="form-fields" class="row">
+                    <div class="col-md-2 starting-column labelFont" > 
+                    </div>
+                    <textarea id="desc-update" class="col-md-6 textarea" disabled >{{display_producers[0]['desc']}}</textarea>
+                    <div class="col-md-2"> 
+                        <button id="edit-entry3" class="update editIcon-container" value="desc" idVal="{{idVal}}" alt="edit Producer's Biography" ><img src= "https://image.flaticon.com/icons/svg/84/84380.svg" class= "editIcon" /></button>
+                    </div>
+                </div>
+                <div id="form-fields" class="row">
+                    <div class="col-md-2 starting-column labelFont" > 
+                        This Producer began in:
+                    </div>
+                    <input id="startYear-update" class="col-md-6 input-field " value="{{display_producers[0]['startYear']}}"  disabled /> 
+                    <div class="col-md-2"> 
+                        <button id="edit-entry4" class="update editIcon-container" value="startYear" idVal="{{idVal}}" alt="edit Producer's starting year" ><img src= "https://image.flaticon.com/icons/svg/84/84380.svg" class= "editIcon" /></button>
+                    </div>
+                </div>
+                <div id="form-fields" class="row">
+                    <div class="col-md-2 starting-column subheadingFont" > 
+                        About their music:
+                    </div>
+                </div>
+                <div id="form-fields" class="row">
+                    <div class="col-md-2 starting-column labelFont" > 
+                        Vocaloids Used:
+                    </div>
+                    <div id="vocals" class="col-md-6" > 
+                    </div>
+                </div>
+                <div id="form-fields" class="row">
+                    <div class="col-md-2 starting-column labelFont" > 
+                        Add a Vocaloid:
+                    </div>
+                    <div class="col-md-6" > 
+                        <input id="vocaloids-input" class="client-field input-style" placeholder="vocaloid name" />
+                        <div id="array-warning0" class="hide-warning">* please input at least one Vocaloid</div>
+                        <div id="arr-text-warning0" class="hide-warning">* field cannot be empty</div>
+                        <div id="arr-space-warning0" class="hide-warning">* input cannot contain only spaces</div>
+                    </div>
+                    <div class="col-md-3"> 
+                        <button id="add-vocaloid">+</button>
+                    </div>
+                </div>
+                <div id="form-fields" class="row">
+                    <div id="voca-entries" class="col-md-6 offset-md-3" > 
+                    </div>
+                </div>
+
+                <div id="form-fields" class="row">
+                    <div class="col-md-2 starting-column labelFont" > 
+                        Number of Songs Produced:
+                    </div>
+                    <input id="songNum-update" class="col-md-6 input-field " value="{{display_producers[0]['songNum']}}" disabled /> 
+                    <div class="col-md-2"> 
+                        <button id="edit-entry5" class="update editIcon-container" value="songNum" idVal="{{idVal}}" alt="edit number of songs produced" ><img src= "https://image.flaticon.com/icons/svg/84/84380.svg" class= "editIcon" /></button>
+                    </div>
+                </div>
+        </div>
+        {% endblock%}
+    </body>
+</html>

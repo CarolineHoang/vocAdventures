@@ -1,0 +1,153 @@
+<!-- 
+    Author: Caroline Hoang
+    Simple Bootstrap Navbar
+
+    This navbar is the base of the template structure and, 
+    on the view page, it holds the edit buttons.
+    This is so that the buttons stay on the top of the page and move with the navbar.
+    This navbar also holds the search bar used to search on the Homepage (or from any page).
+
+    [A UI Design Project] 
+-->
+
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Let's List the P-Names!</title>
+
+        <!-- bootstrap -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"> 
+        <!-- jquery -->
+        <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script> 
+        <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script> 	 
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> 
+        <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
+        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script> -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+        <script  type="text/javascript" src="{{ url_for('static', filename = 'navbar.js') }}" ></script>
+        {% block jsFile %}{% endblock %}
+        <style>
+            .inlineDisplay{
+                display: inline-block; /*to show the search box with form width and have the search button inline with it dispite outside the form div (so that it won't randomly submit the page)*/
+            }
+            .searchBar{
+                width: 20vw;
+            }
+            .stickyNav{
+                position:fixed;
+                z-index: 50;
+                width:100vw;
+                flex-direction: column;
+                padding-bottom: .5rem;
+            }
+            .navOptions{
+                display: flex;
+                flex-direction: row;
+                justify-content: space-evenly;
+                width:100vw;
+                padding-left: 1vw;
+                padding-right: 1vw;
+            }
+            .navSettings{
+                height: 6vw;
+            }
+            .n_hide-editing-buttons{
+                display: none;
+            }
+            .n_show-editing-buttons{
+                display: inline-block;
+            }
+            .fixed{
+                /* top:6vw; */
+                /* margin-top:0; */
+                left:0;
+                /* display: block; */
+                /* flex-basis: 100%; */
+                width:100vw !important;
+                /* height: 0; */
+                /* position: fixed; */
+            }
+            .change-button-container{
+                width:100vw;
+                /* height: 3vw; */
+                margin-top: 1vw;
+                padding-top: 1vw;
+                padding-bottom: 1vw;
+                padding-right:1vw;
+                background-color: rgba(128, 128, 128, 0.212);
+                justify-content: flex-end;
+                z-index: 50;
+
+            }
+            .change-buttons{
+                float:right;
+                margin-left: .5rem;
+            }
+            #update-entry{
+                font-weight: bold;
+            }
+            #discard-changes{
+                color:grey;
+            }
+        </style>
+        {% block pageStyles %}{% endblock %}
+    </head>
+
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light stickyNav">
+            <div class="navOptions">
+                
+                <a class="navbar-brand" href="/">Let's List the P Names!</a>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                    <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link" href="/create">Create</a>
+                    </li>                    
+                    <!-- <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" >
+                        Dropdown
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                    </li> -->
+                    <!-- <li class="nav-item">
+                    <a class="nav-link disabled" href="#">Disabled</a>
+                    </li> -->
+                </ul>
+                <!-- <form class="form-inline my-2 my-lg-0 inlineDisplay"> -->
+
+                <!-- search bar -->
+                <div>
+                    <input id="navSearch" class="form-control mr-sm-2 searchBar inlineDisplay" type="search" placeholder="Search" aria-label="Search">
+                    <button id="navSearchButton" class="btn btn-outline-success my-2 my-sm-0" >Go!</button>
+                </div>
+                </div>
+                <button class="navbar-toggler navSettings" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                    </button>
+            </div>
+            <!-- the view page editing buttons -->
+            <div  id="n_editing-buttons"  class="fixed change-button-container  n_hide-editing-buttons ">
+                <a href="/../view/{{idVal}}">
+                    <button id="update-entry" class="change-buttons" >Submit</button>
+                </a>
+                <a href="/../view/{{idVal}}"><button id="discard-changes" class="change-buttons" >Discard Changes</button></a>
+            </div>
+            
+          </nav>
+    {% block pageContent %}{% endblock %}
+    </body>
+</html>

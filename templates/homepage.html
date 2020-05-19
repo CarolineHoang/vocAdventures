@@ -1,0 +1,163 @@
+<!-- 
+    Author: Caroline Hoang
+    JS functionality for the Homepage to show the most recent 10 or show search results
+
+    Found at the / route
+    [A UI Design Project] 
+-->
+
+{% extends 'navbar.html' %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Let's List the P-Names!</title>
+
+        <!-- jquery -->
+        <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script> 
+        <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script> 	 
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> 
+
+        <!-- bootstrap -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"> 
+
+        <!-- import the static js file -->
+        {% block jsFile %}
+        <script  type="text/javascript" src="{{ url_for('static', filename = 'homepage.js') }}" ></script>
+
+        <!-- NO variables being passed for get requests -->
+
+        {% endblock %}
+
+        {% block pageStyles %}
+        <style> 
+            body{
+                font-size: 1rem;
+                
+            }
+            .container{
+                width: 95vw;
+                max-width: 95vw;
+            }
+            .header{
+                    width: 100%;
+                    height: 100%;
+                    background-color: lightgrey;
+                    font-size: 2.5rem;
+                    padding: calc(8vw + 5vw) 5vw 8vw 5vw;
+                    font-weight: bold;
+            }
+            .missionFont{
+                font-size: 1.5rem;
+            }
+            .hide-object{
+                display: none;
+            }
+            .show-object{
+                color: hotpink;
+                font-size: .8rem;
+            }
+            .searchIndication{
+                font-weight:900;
+                color:black;
+            }
+            .searchFont{
+                font-size: 2rem;
+                color:rgb(59, 59, 59);
+            }
+            .vocaloidList{
+                font-size: 1.1rem;
+                color:rgb(77, 76, 76);
+            }
+            .card-body{ /*  boostrap class  */
+                padding: 1.25rem; /*  default  */
+                padding-right: 3rem;
+            }
+            .form-fields{
+                overflow-wrap: break-word;
+                hyphens: auto;
+                margin-top: 4vw;
+                margin-bottom: 10vw;
+            }
+            .counter{
+                margin-top: 4vw;
+            }
+            .appear{
+                display:block;
+            }
+
+            /* if we switch to showing the producer description instead of their 
+            list of vocaloids, this would be useful to cut length             */
+            /*VVV styles were found VVV*/
+
+            /* styles for '...'   */ 
+            .block-with-text {
+                /* hide text if it more than N lines  */
+                overflow: hidden;
+                /* for set '...' in absolute position */
+                position: relative; 
+                /* use this value to count block height */
+                line-height: 1.2em;
+                /* max-height = line-height (1.2) * lines max number (3) */
+                max-height: calc(1.2em *3);/*3.6em; */
+                /* fix problem when last visible word doesn't adjoin right side  */
+                text-align: justify;  
+                /* place for '...' */
+                margin-right: -1em;
+                padding-right: 1em;
+            }
+            /* create the ... */
+            .block-with-text:before {
+                /* points in the end */
+                content: '...';
+                /* absolute position */
+                position: absolute;
+                /* set position to right bottom corner of block */
+                right: 0;
+                bottom: 0;
+            }
+            /* hide ... if we have text, which is less than or equal to max lines */
+            .block-with-text:after {
+                /* points in the end */
+                content: '';
+                /* absolute position */
+                position: absolute;
+                /* set position to right bottom corner of text */
+                right: 0;
+                /* set width and height */
+                width: 1em;
+                height: 1em;
+                margin-top: 0.2em;
+                /* bg color = bg color under block */
+                background: white;
+            }
+        </style>
+        {% endblock %}
+    </head>
+    <body>
+        {% block pageContent %}
+        <div class="container">
+            <div class="row">
+                <div class="header col-md-12" >
+                    <div>
+                        Let's List the P Names!
+                    </div>
+                    <div class= "missionFont">
+                        Here, you can discover new Voclaloid Producers to listen to based on the Vocaloids (a singing voice synthesizer software) they've used, and that you know, or learn more about Producers you already know!
+                    </div>
+                </div>
+            </div>
+            {% block content %}{% endblock %}
+            <div id="resultsContainer" class="row">
+                <div id="results-count" class="col-md-12"></div>
+            </div>
+            <div class="form-fields row">  
+                <div id="entries" class="col-md-12" > 
+                </div>
+            </div>
+        </div>
+        {% endblock %}
+    </body>
+</html>

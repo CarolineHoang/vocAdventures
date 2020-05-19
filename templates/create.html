@@ -1,0 +1,183 @@
+<!-- 
+    Author: Caroline Hoang
+    HTML for the create page to create a new Vocaloid Producer
+
+    Found at the /create route
+    [A UI Design Project]
+-->
+
+{% extends 'navbar.html' %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Create New Producer</title>
+
+        <!-- jquery -->
+        <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script> 
+        <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script> 	 
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> 
+        <!-- bootstrap -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"> 
+
+        {% block jsFile %}
+        <!-- import the static js file -->
+        <script  type="text/javascript" src="{{ url_for('static', filename = 'create.js') }}" ></script>
+        {% endblock %}
+
+        {% block pageStyles %}
+        <style> 
+            body{
+                font-size: 1rem;
+            }
+            .header{
+                    width: 100%;
+                    height: 100%;
+                    background-color: lightgrey;
+                    font-size: 2.5rem;
+                    padding: calc(8vw + 5vw) 0 8vw 5vw;
+                    font-weight: bold;
+            }
+            .delete-button{
+                height: 3vw;
+                width: 3vw;
+                border-radius: .3rem;
+                background-color: rgb(255, 208, 0);
+            }
+            .input-style{
+                width: 100%
+            }
+            .hide{
+                display: none;
+            }
+            .show{
+                display: block;
+            }
+            .warning-text{
+                color: hotpink;
+                font-size: .8rem;
+            }
+            .starting-column{
+                padding-left: 0 !important;
+                margin-left:  0 !important;
+            }
+            .lastRow{
+                margin-bottom: 10vw;
+            }
+            .form-fields{
+                overflow-wrap: break-word;
+                hyphens: auto;
+                margin-top: 5vh;
+            }
+            #add-entry{
+                padding: .3rem;
+                border-radius: .3rem;
+                background-color: rgb(0, 68, 255);
+                color: white;
+            }
+            #failure{     
+                font-size: 1.5rem;
+                color:red;
+                font-weight: bold;
+                padding: 8vh 0 8vh 5vw;
+                background-color: rgb(226, 192, 225);
+            }
+        </style>
+        {% endblock %}
+    </head>
+    <body>
+        {% block pageContent %}
+        <div class="header" >
+        Create New Producer Entry
+        </div>
+        <div id="failure" class="hide"> AJAX ERROR: Failure to Process New Entry: please try again </div>
+
+        <form class="container">
+            <div class="row form-fields">
+                <div class="col-md-3 starting-column" > 
+                </div>
+                <div class="col-md-6" > 
+                    <div id="success-notif" class="hide">* New entry successfully created. *</div>
+                </div>
+                <div class="col-md-3"> 
+                    <a id="view-new" href= "/../view/{{testVal}}"> <button id="view-entry" class="hide" type="button" formType= "button" >View your newest entry></button></a>
+                </div>
+            </div>
+            <div class="row form-fields">
+                <div class="col-md-3 starting-column" > 
+                    Producer Name:
+                </div>
+                <div class="col-md-6" > 
+                    <input id="name-input" class="client-field input-style" placeholder="Producer's Name" dataType= "text" formType= "input"/>
+                    <div id="text-warning1" class="warning-text hide">* field cannot be empty</div>
+                    <div id="space-warning1" class="warning-text hide">* input cannot contain only spaces</div>
+                </div>
+                <div class="col-md-3"> 
+                    <button id="add-entry" type="button" formType= "button"  >Submit</button>
+                    <!-- <a id="view-new" href= "/../view/{{testVal}}"> <button id="view-entry" class="hide" type="button" formType= "button"  >View your newest entry></button></a> -->
+                </div>
+            </div>
+            <div class="row form-fields">
+                <div class="col-md-3 starting-column" > 
+                    Description:
+                </div>
+                <div class="col-md-6" > 
+                    <textarea id="desc-input" class="client-field input-style" placeholder="Write a bio here..." dataType= "text" formType= "input"  ></textarea>
+                    <div id="text-warning3" class="warning-text hide">* field cannot be empty</div>
+                    <div id="space-warning3" class= "warning-text hide">* input cannot contain only spaces</div>
+                </div>
+            </div>
+            <div class="row form-fields">
+                <div class="col-md-3 starting-column" > 
+                    Starting Year:
+                </div>
+                <div class="col-md-6" > 
+                    <input id="startYear-input" class="client-field input-style" placeholder="debut year" dataType= "integer" formType= "input" />
+                    <div id="num-warning4" class="warning-text hide">* please enter valid integer</div>
+                </div>
+            </div>
+            <div class="row form-fields">
+                <div class="col-md-3 starting-column" > 
+                    Profile Image Link:
+                </div>
+                <div class="col-md-6" > 
+                    <input id="profileImg-input" class="client-field input-style" placeholder="link to profile image" dataType= "text"  formType= "input"/>
+                    <div id="text-warning5" class="warning-text hide">* field cannot be empty</div>
+                    <div id="space-warning5" class="warning-text hide">* input cannot contain only spaces</div>
+                </div>
+            </div>
+            <div class="row form-fields">
+                <div class="col-md-3 starting-column" > 
+                    Number of Songs:
+                </div>
+                <div class="col-md-6" > 
+                    <input id="songNum-input" class="client-field input-style" placeholder="#songs composed" dataType= "integer"  formType= "input" />
+                    <div id="num-warning6" class="warning-text hide">* please enter valid integer</div>
+                </div>
+            </div>
+            <div class="row form-fields">
+                <div class="col-md-3 starting-column" > 
+                    Vocaloids Used:
+                </div>
+                <div class="col-md-6" > 
+                    <input id="vocaloids-input" class="client-field input-style" placeholder="vocaloid name" dataType= "array"  formType= "input" />
+                    <div id="array-warning0" class="warning-text hide">* please input at least one Vocaloid</div>
+                    <div id="arr-text-warning0" class="warning-text hide">* field cannot be empty</div>
+                    <div id="arr-space-warning0" class="warning-text hide">* input cannot contain only spaces</div>
+                </div>
+                <div class="col-md-3"> 
+                    <button id="add-vocaloid" type="button" formType= "button"  >+</button>
+                </div>
+            </div>
+            <div class="row lastRow form-fields">
+                <div id="entries" class="col-md-12 offset-md-3" > 
+                </div>
+            </div>
+        </form>
+        <div class="row form-fields">
+        </div>
+        {% endblock %}
+    </body>
+</html>
